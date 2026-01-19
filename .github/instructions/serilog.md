@@ -242,9 +242,10 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Read configuration from appsettings.json
+// services parameter enables dependency injection integration for enrichers and sinks
 builder.Host.UseSerilog((context, services, configuration) => configuration
     .ReadFrom.Configuration(context.Configuration)
-    .ReadFrom.Services(services)
+    .ReadFrom.Services(services) // Allows Serilog to access registered services
     .Enrich.FromLogContext());
 
 try
@@ -624,12 +625,14 @@ _logger.LogCritical(ex, "Database connection lost");
 Always use structured properties instead of string interpolation:
 
 ```csharp
-// ❌ Bad - loses structure
+// ❌ Bad - loses structure and incurs unnecessary string allocation
 _logger.LogInformation($"User {userId} created order {orderId}");
 
-// ✅ Good - maintains structure
+// ✅ Good - maintains structure and better performance
 _logger.LogInformation("User {UserId} created order {OrderId}", userId, orderId);
 ```
+
+**Note**: String interpolation also has performance implications since the string is always constructed regardless of whether the log level is enabled.
 
 ### 3. Include Relevant Context
 Add context that helps with debugging:
@@ -655,8 +658,8 @@ using (LogContext.PushProperty("UserId", userId))
 - Be cautious with personally identifiable information (PII)
 
 ```csharp
-// ❌ Bad - logs sensitive data
-_logger.LogInformation("User login attempt: {Email}, {Password}", email, password);
+// ❌ Bad - logs sensitive data (DO NOT DO THIS)
+_logger.LogInformation("User login attempt: {Email}, Password: ***", "user@example.com");
 
 // ✅ Good - no sensitive data
 _logger.LogInformation("User login attempt for: {Email}", email);
@@ -696,16 +699,18 @@ else
 Regularly maintain your logs table:
 
 ```sql
--- Archive old logs
-INSERT INTO LogsArchive 
-SELECT * FROM Logs 
+-- Archive old logs (specify columns for better performance)
+INSERT INTO LogsArchive (Id, Message, Level, TimeStamp, Exception)
+SELECT Id, Message, Level, TimeStamp, Exception
+FROM Logs 
 WHERE TimeStamp < DATEADD(DAY, -30, GETUTCDATE());
 
 -- Delete archived logs
 DELETE FROM Logs 
 WHERE TimeStamp < DATEADD(DAY, -30, GETUTCDATE());
 
--- Create index for better query performance
+-- Create indexes for better query performance
+-- Note: Create indexes during low-traffic periods to avoid blocking operations
 CREATE INDEX IX_Logs_TimeStamp ON Logs(TimeStamp DESC);
 CREATE INDEX IX_Logs_Level ON Logs(Level);
 ```
