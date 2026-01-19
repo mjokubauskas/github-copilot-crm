@@ -1,23 +1,14 @@
-# Setting up and Using Serilog for Logging
-
-## Introduction
-Serilog is a diagnostic logging library for .NET applications. It provides a simple way to log messages with rich data and supports multiple sinks, making it easy to send logs to different destinations.
-
 ## Installation
-To get started with Serilog, you need to install the Serilog package. You can do this using NuGet. Run the following command in your Package Manager Console:
 
+Add the following lines to install the Console and MSSQL sinks:
 ```bash
-Install-Package Serilog
-```
-
-You may also want to install additional sinks depending on where you want to send your logs. For example, if you want to log to a file, install the following:
-
-```bash
-Install-Package Serilog.Sinks.File
+Install-Package Serilog.Sinks.Console
+Install-Package Serilog.Sinks.MSSqlServer
 ```
 
 ## Basic Configuration
-To configure Serilog, you need to set up a logger. This typically happens at the start of your application. Here’s an example of how to set it up in a .NET Core application:
+
+### Setup Serilog for Console and MSSQL
 
 ```csharp
 using Serilog;
@@ -28,17 +19,24 @@ public class Program
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
-            .WriteTo.File("logs/myapp.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.Console()
+            .WriteTo.MSSqlServer(
+                connectionString: "YourConnectionString",
+                sinkOptions: new MSSqlServerSinkOptions
+                {
+                    TableName = "Logs",
+                    AutoCreateSqlTable = true
+                })
             .CreateLogger();
 
         try
         {
-            Log.Information("Starting up the application...");
+            Log.Information("Starting the application with Logger...");
             CreateHostBuilder(args).Build().Run();
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Application start-up failed");
+            Log.Fatal(ex, "Application startup failed.");
         }
         finally
         {
@@ -47,7 +45,7 @@ public class Program
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
-        .UseSerilog() // Add this line to integrate Serilog
+        .UseSerilog()
         .ConfigureWebHostDefaults(webBuilder =>
         {
             webBuilder.UseStartup<Startup>();
@@ -55,14 +53,23 @@ public class Program
 }
 ```
 
-## Logging Messages
-Once configured, you can start logging messages. Here are some examples:
+## Advanced Configuration
+
+### Structured Logging
+
+Structured logging allows capturing data in a structured format instead of plain text, which enables better querying and visualization in various platforms like MSSQL, Kibana, or Seq. For example:
 
 ```csharp
-Log.Information("This is an information message.");
-Log.Warning("This is a warning message.");
-Log.Error("This is an error message with an exception", ex);
+Log.ForContext("UserId", user.Id)
+   .Information("User successfully logged in");
 ```
 
-## Conclusion
-Serilog makes logging in .NET applications easy and flexible. Be sure to explore the various sinks and enrichers available to enhance your logging experience.
+### Additional Enrichers
+
+Enrichers allow you to add contextual information to your logs, making it easier to analyze them later. Example:
+
+```csharp
+.Enrich.WithMachineName()
+.Enrich.WithThreadId()
+```
+- [Explore Serilog enrichers](https://github.com/serilog/serilog/wiki/Provided-Sinks).
