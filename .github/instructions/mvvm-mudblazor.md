@@ -106,6 +106,8 @@ MudBlazor makes it easy to create professional, modern web applications without 
        <meta charset="utf-8" />
        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
        <base href="~/" />
+       <link rel="preconnect" href="https://fonts.googleapis.com" />
+       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
        <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
        <link href="css/site.css" rel="stylesheet" />
@@ -1272,7 +1274,7 @@ To further enhance your MVVM with MudBlazor applications, consider:
 ### Resources
 
 - **MudBlazor Documentation**: [mudblazor.com](https://mudblazor.com/)
-- **Blazor Documentation**: [docs.microsoft.com/aspnet/core/blazor](https://docs.microsoft.com/aspnet/core/blazor)
+- **Blazor Documentation**: [learn.microsoft.com/aspnet/core/blazor](https://learn.microsoft.com/en-us/aspnet/core/blazor)
 - **MVVM Pattern**: [Microsoft MVVM Pattern Guide](https://learn.microsoft.com/en-us/dotnet/architecture/maui/mvvm)
 
 By following this guide, you now have a solid foundation for building maintainable, testable, and visually appealing Blazor applications using the MVVM pattern with MudBlazor. Happy coding!
