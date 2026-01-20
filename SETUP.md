@@ -73,3 +73,17 @@ This document serves as a comprehensive guide to setting up the backend of the C
 
 ## Conclusion
 This guide provides a foundational approach to setting up a robust backend for the CRM system. For additional resources, refer to the official documentation for each technology used.
+
+## Detailed Implementation Guide
+For a comprehensive, production-ready guide on implementing Minimal API with CQRS in .NET 6, see:
+
+**[Minimal API with CQRS Pattern in .NET 6 - Complete Implementation Guide](./.github/instructions/minimal-api-cqrs-guide.md)**
+
+This guide includes:
+- Complete project setup with all required NuGet packages
+- Full code examples for commands, queries, and handlers
+- Database schema and Dapper integration
+- JWT and Microsoft Entra ID authentication setup
+- Error handling middleware and validation
+- Advanced features: filtering, sorting, searching, pagination
+- Production-ready best practices and patterns

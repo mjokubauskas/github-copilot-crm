@@ -22,3 +22,14 @@ In a CRM application, commands modify the state of the application, such as crea
 
 ## Implementation
 In our CRM application, implement the CQRS pattern by creating distinct models and services for commands and queries. Consider using messaging systems for command handling to ensure eventual consistency across distributed systems.
+
+## Detailed Implementation Guide
+For a comprehensive, step-by-step guide on implementing CQRS with Minimal API in .NET 6, including:
+- Complete project setup with required NuGet packages
+- Full code examples for commands, queries, and handlers
+- Database integration with Dapper
+- Authentication and authorization setup
+- Error handling and validation
+- Filtering, sorting, and searching capabilities
+
+**See the complete guide: [Minimal API with CQRS Pattern in .NET 6](./minimal-api-cqrs-guide.md)**

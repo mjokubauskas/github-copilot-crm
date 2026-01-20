@@ -117,6 +117,7 @@ To ensure scalability, modularity, and maintainability, the architecture leverag
   - Razor components using MVVM for data binding.
 - **Backend**:
   - ASP.NET Core 10 for REST APIs/Web APIs.
+  - Minimal API with CQRS pattern for lightweight, scalable endpoints.
   - Entity Framework Core for database.
 - **Database**:
   - SQL Server, PostgreSQL, or any modern RDBMS with Code-First migrations.
@@ -128,5 +129,15 @@ To ensure scalability, modularity, and maintainability, the architecture leverag
   - Hangfire or Azure Functions.
 - **Logging**:
   - Use Serilog, Application Insights, or NLog.
+
+## Implementation Guides
+
+For detailed implementation guides, see:
+- **[Minimal API with CQRS Pattern in .NET 6](./.github/instructions/minimal-api-cqrs-guide.md)** - Complete guide with code examples, authentication, database integration, and best practices
+- **[CQRS Pattern](./.github/instructions/cqrs-pattern.md)** - Overview of CQRS in CRM context
+- **[Domain-Driven Design](./.github/instructions/domain-driven-design.md)** - DDD concepts and implementation
+- **[Repository Pattern](./.github/instructions/repository-pattern.md)** - Data access abstraction with Dapper
+- **[Setup Guide](./SETUP.md)** - Backend setup documentation
+
 
 This architecture sets the foundation for building and scaling a CRM system while following industry best practices and design principles. For further details or implementation, feel free to reach out!
